@@ -16,7 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 
-public class OOPMidtermLab {
+public class Week8Activity2 {
 
     static Scanner scanner = new Scanner(System.in);
 
