@@ -1,3 +1,5 @@
+// PRINCE GODFREY S. PEPITO              BSCS 2-Y1-1
+
 public class Week8assignment1 {
     public static void main(String[] args) {
         int[] numbers = {5, 10, 15, 20, 25};

@@ -1,3 +1,5 @@
+// PRINCE GODFREY S. PEPITO              BSCS 2-Y1-1
+
 import java.util.Scanner;
 
 public class Week7assignment1 {

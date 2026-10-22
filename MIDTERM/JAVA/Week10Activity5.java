@@ -1,95 +1,111 @@
+//PRINCE GODFREY S. PEPITO              BSCS 2-Y1-1
+
 import java.util.Scanner;
 
-// ==========================================
-// 1. BASE ACCOUNT CLASS
-// ==========================================
-abstract class Account {
-    private String accountNumber;
-    protected double balance;
-
-    public Account(String accountNumber, double balance) {
-        this.accountNumber = accountNumber;
-        this.balance = balance;
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void deposit(double amount) {
-        if (amount > 0) {
-            balance += amount;
-            System.out.printf("Deposited ₱%.2f successfully.%n", amount);
-        }
-    }
-
-    // Abstract methods to enforce specific behaviors in child classes
-    public abstract void withdraw(double amount);
-    public abstract String getAccountType();
-}
-
-// ==========================================
-// 2. SAVINGS ACCOUNT CLASS
-// ==========================================
-class SavingsAccount extends Account {
-    public SavingsAccount(String accountNumber, double balance) {
-        super(accountNumber, balance);
-    }
-
-    @Override
-    public void withdraw(double amount) {
-        if (amount > balance) {
-            System.out.println("Transaction declined: Insufficient savings balance.");
-        } else {
-            balance -= amount;
-            System.out.printf("Withdrew ₱%.2f successfully from Savings.%n", amount);
-        }
-    }
-
-    @Override
-    public String getAccountType() {
-        return "Savings (" + getAccountNumber() + ")";
-    }
-}
-
-// ==========================================
-// 3. CHECKING ACCOUNT CLASS
-// ==========================================
-class CheckingAccount extends Account {
-    public CheckingAccount(String accountNumber, double balance) {
-        super(accountNumber, balance);
-    }
-
-    @Override
-    public void withdraw(double amount) {
-        if (amount > balance) {
-            System.out.println("Transaction declined: Insufficient checking balance.");
-        } else {
-            balance -= amount;
-            System.out.printf("Withdrew ₱%.2f successfully from Checking.%n", amount);
-        }
-    }
-
-    @Override
-    public String getAccountType() {
-        return "Checking (" + getAccountNumber() + ")";
-    }
-}
-
-// ==========================================
-// 4. MAIN DRIVER PROGRAM
-// ==========================================
 public class Week10Activity5 {
+    static Scanner sc = new Scanner(System.in);
 
+    // ==========================================
+    // 1. BASE ACCOUNT CLASS
+    // ==========================================
+    static abstract class Account {
+        private String accountNumber;
+        protected double balance;
+
+        public Account(String accountNumber, double balance) {
+            this.accountNumber = accountNumber;
+            this.balance = balance;
+        }
+
+        public String getAccountNumber() {
+            return accountNumber;
+        }
+
+        public double getBalance() {
+            return balance;
+        }
+
+        public void deposit(double amount) {
+            balance += amount;
+            System.out.printf("Deposited \u20B1%.2f successfully.%n", amount);
+        }
+
+        // Abstract methods to enforce specific behaviors in child classes
+        public abstract void withdraw(double amount);
+        public abstract String getAccountType();
+    }
+
+    // ==========================================
+    // 2. SAVINGS ACCOUNT CLASS
+    // ==========================================
+    static class SavingsAccount extends Account {
+        public SavingsAccount(String accountNumber, double balance) {
+            super(accountNumber, balance);
+        }
+
+        @Override
+        public void withdraw(double amount) {
+            if (amount > balance) {
+                System.out.println("Error: Insufficient savings balance.");
+            } else {
+                balance -= amount;
+                System.out.printf("Withdrew \u20B1%.2f successfully from Savings.%n", amount);
+            }
+        }
+
+        @Override
+        public String getAccountType() {
+            return "Savings (" + getAccountNumber() + ")";
+        }
+    }
+
+    // ==========================================
+    // 3. CHECKING ACCOUNT CLASS
+    // ==========================================
+    static class CheckingAccount extends Account {
+        public CheckingAccount(String accountNumber, double balance) {
+            super(accountNumber, balance);
+        }
+
+        @Override
+        public void withdraw(double amount) {
+            if (amount > balance) {
+                System.out.println("Error: Insufficient checking balance.");
+            } else {
+                balance -= amount;
+                System.out.printf("Withdrew \u20B1%.2f successfully from Checking.%n", amount);
+            }
+        }
+
+        @Override
+        public String getAccountType() {
+            return "Checking (" + getAccountNumber() + ")";
+        }
+    }
+
+    // ==========================================
+    // 4. MAIN DRIVER PROGRAM
+    // ==========================================
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
         System.out.println("Welcome to the OOP Banking System");
-        double openingBalance = readNonNegativeBalance(scanner);
+
+        // Ask for the opening balance until a valid number (0 or more) is entered
+        double openingBalance = 0;
+        boolean balanceInitialized = false;
+        do {
+            try {
+                System.out.print("Opening balance: ");
+                openingBalance = sc.nextDouble();
+                if (openingBalance >= 0) {
+                    balanceInitialized = true;
+                } else {
+                    System.out.println("Error: Opening balance cannot be negative.");
+                }
+            } catch (Exception e) {
+                System.out.println("Error: Invalid input. Numeric values only.");
+                sc.nextLine();
+            }
+        } while (!balanceInitialized);
 
         // Separate objects, each with its own balance
         SavingsAccount savingsAccount = new SavingsAccount("SAV-1001", openingBalance);
@@ -99,83 +115,66 @@ public class Week10Activity5 {
         Account selectedAccount = savingsAccount;
         printAccountSummary(selectedAccount);
 
-        boolean running = true;
-        while (running) {
-            showMenu();
-            System.out.print("Choice: ");
-            String choice = scanner.nextLine().trim();
-
-            switch (choice) {
-                case "1": {
-                    double amount = readPositiveAmount(scanner, "Amount to withdraw: ");
-                    if (amount > 0) {
-                        selectedAccount.withdraw(amount);
-                    }
-                    break;
-                }
-                case "2": {
-                    double amount = readPositiveAmount(scanner, "Amount to deposit: ");
-                    if (amount > 0) {
-                        selectedAccount.deposit(amount);
-                    }
-                    break;
-                }
-                case "3":
-                    printAccountSummary(selectedAccount);
-                    break;
-                case "4":
-                    // Only the reference changes; no balance is touched
-                    selectedAccount = (selectedAccount == savingsAccount)
-                            ? checkingAccount : savingsAccount;
-                    printAccountSummary(selectedAccount);
-                    break;
-                case "5":
-                    running = false;
-                    System.out.println("Thank you for using the system!");
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please enter a number from 1 to 5.");
-            }
-        }
-        scanner.close();
-    }
-
-    public static void showMenu() {
-        System.out.println("\n1 Withdraw | 2 Deposit | 3 Show balance | 4 Switch account | 5 Exit");
-    }
-
-    // Keeps asking until the opening balance is a number >= 0
-    public static double readNonNegativeBalance(Scanner scanner) {
-        while (true) {
-            System.out.print("Opening balance: ");
-            String input = scanner.nextLine().trim().replace(",", "");
+        int choices;
+        do {
             try {
-                double value = Double.parseDouble(input);
-                if (value >= 0) {
-                    return value;
+                System.out.println("\n--- Banking Menu ---");
+                System.out.println("1. Withdraw Amount");
+                System.out.println("2. Deposit Amount");
+                System.out.println("3. Show Balance");
+                System.out.println("4. Switch Account");
+                System.out.println("5. Exit");
+                System.out.print("Enter your choice: ");
+                choices = sc.nextInt();
+
+                switch (choices) {
+                    case 1:
+                        withdrawAmount(selectedAccount);
+                        break;
+                    case 2:
+                        depositAmount(selectedAccount);
+                        break;
+                    case 3:
+                        printAccountSummary(selectedAccount);
+                        break;
+                    case 4:
+                        // Only the reference changes; no balance is touched
+                        selectedAccount = (selectedAccount == savingsAccount)
+                                ? checkingAccount : savingsAccount;
+                        printAccountSummary(selectedAccount);
+                        break;
+                    case 5:
+                        System.out.println("Thank you for using the system!");
+                        break;
+                    default:
+                        System.out.println("Error: Invalid Choice. Please select a valid option.");
                 }
-                System.out.println("Opening balance cannot be negative.");
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
+            } catch (Exception bank) {
+                System.out.println("Error: Invalid input. Numeric values only.");
+                sc.nextLine();
+                choices = 0;
             }
+        } while (choices != 5);
+    }
+
+    public static void withdrawAmount(Account account) {
+        System.out.print("How much do you want to withdraw?\nAmount: ");
+        double amount = sc.nextDouble();
+        if (amount <= 0) {
+            System.out.println("Error: Amount must be greater than zero.");
+        } else {
+            account.withdraw(amount);
         }
     }
 
-    // Returns the amount if it is a positive number, otherwise prints a
-    // message and returns -1 so the caller goes back to the menu
-    public static double readPositiveAmount(Scanner scanner, String prompt) {
-        System.out.print(prompt);
-        String input = scanner.nextLine().trim().replace(",", "");
-        try {
-            double value = Double.parseDouble(input);
-            if (value > 0) {
-                return value;
-            }
-            System.out.println("Invalid amount. It must be greater than zero.");
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a number.");
+    public static void depositAmount(Account account) {
+        System.out.print("How much do you want to deposit?\nAmount: ");
+        double amount = sc.nextDouble();
+        if (amount <= 0) {
+            System.out.println("Error: Amount must be greater than zero.");
+        } else {
+            account.deposit(amount);
         }
-        return -1;
     }
 
     // Uses only Account's methods: no balance arithmetic here

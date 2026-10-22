@@ -1,3 +1,5 @@
+// PRINCE GODFREY S. PEPITO              BSCS 2-Y1-1
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -12,7 +14,7 @@ public class Week7Activity1 {
 
     public static void main(String[] args) {
 
-        char continueChoice;
+        char continueChoice = ' ';
 
         do {
             System.out.println("Choose the program you want to run");
@@ -23,53 +25,66 @@ public class Week7Activity1 {
             System.out.println("Number 5");
             System.out.println("Number 6");
             System.out.println("Number 7");
+            try {
+                System.out.print("Enter your choice (1-7): ");
+                int choice = scanner.nextInt();
+                scanner.nextLine();
+            
 
-            System.out.print("Enter your choice (1-7): ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+                switch (choice) {
 
-            switch (choice) {
+                    case 1:
+                        runProgram1();
+                        break;
 
-                case 1:
-                    runProgram1();
-                    break;
+                    case 2:
+                        runProgram2();
+                        break;
 
-                case 2:
-                    runProgram2();
-                    break;
+                    case 3:
+                        runProgram3();
+                        break;
 
-                case 3:
-                    runProgram3();
-                    break;
+                    case 4:
+                        runProgram4();
+                        break;
 
-                case 4:
-                    runProgram4();
-                    break;
+                    case 5:
+                        runProgram5();
+                        break;
 
-                case 5:
-                    runProgram5();
-                    break;
+                    case 6:
+                        runProgram6();
+                        break;
 
-                case 6:
-                    runProgram6();
-                    break;
+                    case 7:
+                        runProgram7();
+                        break;
 
-                case 7:
-                    runProgram7();
-                    break;
+                    default:
+                        System.out.println("Invalid choice!");
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid input! Please enter a valid number.");
+                scanner.nextLine(); // Flush the scanner buffer
+            }
+            
+            boolean validChoice = false;
 
-                default:
-                    System.out.println("Invalid choice!");
+            while (!validChoice) {
+                System.out.print("\nDo you want to continue? Y/N: ");
+                continueChoice = scanner.next().toUpperCase().charAt(0);
+                if (continueChoice == 'Y') {
+                    validChoice = true;
+                } else if (continueChoice == 'N') {
+                    validChoice = true;
+                } else {
+                    System.out.println("Invalid input! Please enter Y or N.");
+                }
             }
 
-            System.out.print("\nDo you want to continue? Y/N: ");
-            continueChoice = scanner.next().toUpperCase().charAt(0);
-
-            System.out.println();
 
         } while (continueChoice == 'Y');
-
-        System.out.println("Program terminated. Goodbye!");
 
         scanner.close();
     }
@@ -317,11 +332,6 @@ public class Week7Activity1 {
             System.out.println();
         }
     }
-
-
-    // ==========================================
-    // PROGRAM 6: Student Class
-    // ==========================================
 
     // ==========================================
     // PROGRAM 6: Student Class

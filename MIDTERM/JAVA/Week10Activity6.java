@@ -1,3 +1,6 @@
+//PRINCE GODFREY S. PEPITO              BSCS 2-Y1-1
+// ACTIVITY 6: MIDTERM LAB ACTIVITY - 6
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -6,30 +9,35 @@ public class Week10Activity6 {
     public static void main(String[] args) {
         int mainMenuChoice;
         do {
-            System.out.println("\n===== MAIN MENU =====");
-            System.out.println("1. Banking Program (Program 1)");
-            System.out.println("2. Hospital Database Program (Program 2)");
-            System.out.println("3. University Hierarchy Program (Program 3)");
-            System.out.println("4. Exit Application");
-            System.out.print("Select which program to run: ");
-            mainMenuChoice = sc.nextInt();
-            switch (mainMenuChoice) {
-                case 1:
-                    System.out.print("Enter your initial balance: ");
-                    double balance = sc.nextDouble();
-                    bankingProgram(balance);
-                    break;
-                case 2:
-                    hospitalDatabaseProgram();
-                    break;
-                case 3:
-                    UnivRankingProgram();
-                    break;
-                case 4:
-                    System.out.println("Exiting application. Goodbye!");
-                    break;
-                default:
-                    System.out.println("Invalid selection. Try again.");
+            try{
+                System.out.println("\n===== MAIN MENU =====");
+                System.out.println("1. Banking Program (Program 1)");
+                System.out.println("2. Hospital Database Program (Program 2)");
+                System.out.println("3. University Hierarchy Program (Program 3)");
+                System.out.println("4. Exit Application");
+                System.out.print("Select which program to run: ");
+                
+                mainMenuChoice = sc.nextInt();
+                switch (mainMenuChoice) {
+                        case 1:
+                            bankingProgram();
+                            break;
+                        case 2:
+                            hospitalDatabaseProgram();
+                            break;
+                        case 3:
+                            UnivRankingProgram();
+                            break;
+                        case 4:
+                            System.out.println("Exiting application. Goodbye!");
+                            break;
+                        default:
+                            System.out.println("Invalid selection. Try again.");
+                }    
+            } catch (Exception e) {
+                System.out.println("Error: Invalid input. Please enter a number.");
+                sc.nextLine();
+                mainMenuChoice = 0;
             }
         } while (mainMenuChoice != 4);
     }
@@ -42,28 +50,59 @@ public class Week10Activity6 {
     // PROGRAM 1: BANKING SYSTEM
     // ==========================
 
-    public static void bankingProgram(double balance) {
+    public static void bankingProgram() {
         int choices;
+        double balance = 0;
+        boolean balanceInitialized = false;
         do {
-            System.out.println("\n--- Banking Menu ---");
-            System.out.println("1. Withdraw Amount ");
-            System.out.println("2. Deposit Amount");
-            System.out.println("3. Back to Main Menu");
-            System.out.print("Enter your choice: ");
-            choices = sc.nextInt();
-            
-            switch (choices) {
-                case 1:
-                    balance = withdraw(balance);
-                    break;
-                case 2:
-                    balance = deposit(balance);
-                    break;
-                case 3:
-                    System.out.println("Returning to main menu...");
-                    break;
-                default:
-                    System.out.println("Error: Invalid Choice");
+
+            try {
+
+                if (!balanceInitialized) {
+                    System.out.print("Enter your initial balance: ");
+                    balance = sc.nextDouble();
+                    balanceInitialized = true;
+                }
+                System.out.println("\n--- Banking Menu ---");
+                System.out.println("1. Withdraw Amount ");
+                System.out.println("2. Deposit Amount");
+                System.out.println("3. Back to Main Menu");
+                System.out.println("4. Re-enter Initial Balance");
+                System.out.print("Enter your choice: ");
+                choices = sc.nextInt();
+                
+                switch (choices) {
+                    case 1:
+                        balance = withdraw(balance);
+                        break;
+                    case 2:
+                        balance = deposit(balance);
+                        break;
+                    case 3:
+                        System.out.println("Returning to main menu...");
+                        System.exit(0);
+                    case 4:
+                        System.out.println("Reseting balance... Please wait a moment.");
+
+                        int randomDelay = (int) (Math.random() * (6 - 2 + 1)) + 2;
+                            System.out.println("Processing request...");
+
+                            for (int i = randomDelay; i > 0; i--){
+                                System.out.println("Please wait " + i + " seconds...");
+                                Thread.sleep(1000); // Sleep for 1 second
+                            }
+
+                        System.out.println("Balance reset successful. Please re-enter your initial balance.");    
+
+                        balanceInitialized = false; // Restart banking program to re-enter balance
+                        break;
+                    default:
+                        System.out.println("Error: Invalid Choice. Please select a valid option.");
+                }
+            } catch (Exception bank) {
+                System.out.println("Error: Invalid input. Numeric values only.");
+                sc.nextLine();
+                choices = 0;
             }
         } while (choices != 3);
     }
@@ -329,6 +368,7 @@ public class Week10Activity6 {
                     break;
                 default:
                     System.out.println("Error: Invalid Choice");
+                    
             }
         } while (choices != 2);
     }
