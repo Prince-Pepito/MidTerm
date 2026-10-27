@@ -99,6 +99,7 @@ def main():
         print("8. Exit")
         
         choice = input("Select an option (1-8): ").strip()
+        
         if choice == "1":
             while True:  
                 purpose = input("Enter purpose (Enrollment/Records/Payment): ").strip()

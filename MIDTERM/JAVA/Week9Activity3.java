@@ -12,7 +12,7 @@ public class Week9Activity3 {
     public static void main(String[] args) {
         int choice;
         do {
-            System.out.println("\n===== MIDTERM ACTIVITY 2 =====");
+            System.out.println("\n===== MIDTERM ACTIVITY 3 =====");
             System.out.println(" 1. Vowel / Consonant        17. Sum of squares");
             System.out.println(" 2. Date in words            18. Sum 1 to n");
             System.out.println(" 3. Temperature (ICE/WATER)  19. Reverse a number");
